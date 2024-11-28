@@ -20,8 +20,8 @@ export default async function HomeScreen() {
 
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+          source={require('@/assets/images/Hot-Wheels-Emblema.png')}
+          style={styles.hwLogo}
         />
       }>
       <SafeAreaView style={styles.container}>
@@ -53,9 +53,9 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
+  hwLogo: {
+    height: 100,
+    width: '100%',
     bottom: 0,
     left: 0,
     position: 'absolute',
