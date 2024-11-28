@@ -1,50 +1,101 @@
-# Welcome to your Expo app 👋
+# Proyecto Final: Dispositivos Inteligentes
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Milestones Detallados
 
-## Get started
+### **1. Configuración Inicial** 
 
-1. Install dependencies
+- [X] **Configurar el entorno:**
+  - Instalar Node.js, Expo CLI, y configurar un proyecto de React Native.
+  - Instalar dependencias principales:
+    - `react-navigation`
+    - Librerías de diseño (`react-native-paper`, `styled-components`, etc.).
+    - `expo-sqlite` o `react-native-sqlite-storage` para manejar SQLite.
+- [X] **Definir la estructura del proyecto:**
+  - Crear carpetas base:
+    - `screens`, `components`, `services`, y `assets`.
+- [ ] **Configurar la base de datos SQLite:**
+  - **Tabla Categorías**
+  - **Tabla Productos**
 
-   ```bash
-   npm install
-   ```
+---
 
-2. Start the app
+### **2. Desarrollo de Pantalla Principal**
 
-   ```bash
-    npx expo start
-   ```
+- [ ] **Diseño del UI:**
+  - Crear la pantalla inicial para mostrar categorías como cuadros o tarjetas.
+  - Añadir un campo de entrada y un botón para agregar nuevas categorías.
+- [ ] **Funcionalidad:**
+  - Conectar la pantalla inicial a SQLite:
+    - Consultar y mostrar las categorías disponibles.
+    - Permitir agregar nuevas categorías (validar entradas para evitar duplicados).
+  - Implementar navegación a la pantalla de productos al seleccionar una categoría.
+- [ ] **Pruebas:**
+  - Verificar que las categorías se guardan y se muestran correctamente.
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### **3. Desarrollo de la Pantalla de Productos**
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- [ ] **Diseño del UI:**
+  - Crear una lista estilizada para mostrar productos de la categoría seleccionada.
+  - Añadir un campo de entrada y un botón para agregar nuevos productos.
+- [ ] **Funcionalidad:**
+  - Consultar productos relacionados a la categoría seleccionada desde SQLite.
+  - Permitir agregar nuevos productos con:
+    - Nombre
+    - Descripción
+    - Imagen (almacenada como BLOB en SQLite).
+  - Asociar productos a categorías mediante claves foráneas.
+- [ ] **Estilización:**
+  - Diseñar la lista de productos mostrando:
+    - Nombre
+    - Descripción
+    - Imagen en miniatura.
+- [ ] **Pruebas:**
+  - Verificar que los productos se muestran y actualizan correctamente.
 
-## Get a fresh project
+---
 
-When you're ready, run:
+### **4. Mejora de la Presentación** Opcional 
 
-```bash
-npm run reset-project
-```
+- [ ] **Optimización de la Interfaz:**
+  - Ajustar el diseño para dispositivos móviles.
+  - Implementar un tema de colores y estilos consistentes.
+- [ ] **Animaciones:**
+  - Añadir transiciones al abrir pantallas o actualizar listas.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+### **5. Pruebas**
 
-To learn more about developing your project with Expo, look at the following resources:
+- [ ] **Pruebas Completas:**
+  - Revisar todas las funciones principales:
+    - Agregar categorías/productos.
+    - Consultar listas.
+    - Manejar errores o entradas inválidas.
+  - Probar la aplicación en distintos dispositivos/emuladores.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## Productos Incluidos
 
-Join our community of developers creating universal apps.
+Cada producto debe incluir:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **Nombre:** Título claro del producto.
+- **Descripción:** Breve detalle del producto.
+- **Imagen:** Almacenada como BLOB en SQLite.
+
+**Ejemplo visual:**
+
+- **Categoría:** Tecnología
+  - **Producto:** Laptop X
+    - **Descripción:** Procesador Intel i7, 16GB RAM.
+    - **Imagen:** Mostrada desde los datos almacenados en SQLite.
+
+---
+
+## Rúbrica de Evaluación
+
+- **Uso de una fuente de datos como SQLite:** 60%
+- **Funcionamiento completo de la aplicación con React Native:** 30%
+- **Buena presentación de la aplicación (estilo, diseño, etc.):** 10%
