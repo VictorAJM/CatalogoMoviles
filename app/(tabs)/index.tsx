@@ -1,11 +1,15 @@
-import { Image, StyleSheet, Platform, SafeAreaView,FlatList  } from 'react-native';
+import { Image, StyleSheet, Platform, SafeAreaView,FlatList,View, Button, Text   } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import Category from '@/components/Category';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+
+const Stack = createNativeStackNavigator();
 
 export default async function HomeScreen() {
   const categories = [
@@ -14,6 +18,8 @@ export default async function HomeScreen() {
     { id: '3', name: 'Art', year: 2022, objectCount: 8 },
     { id: '4', name: 'History', year: 2021, objectCount: 12 },
   ];
+
+  const navigation = useNavigation(); 
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -25,6 +31,10 @@ export default async function HomeScreen() {
         />
       }>
       <SafeAreaView style={styles.container}>
+        <Button
+          title="Agrega categoria"
+          onPress={() => navigation.navigate('addCategory')} // Navegar a la segunda pantalla
+        />
         <FlatList
           data={categories}
           renderItem={({ item }) => (
