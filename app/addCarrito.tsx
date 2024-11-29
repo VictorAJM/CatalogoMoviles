@@ -2,43 +2,59 @@ import React, { useEffect, useState } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
 import Toast from 'react-native-toast-message';
-import {launchImageLibrary} from 'react-native-image-picker';
-import RNFS from 'react-native-fs';
-
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { PermissionsAndroid, Platform } from 'react-native';
 
 export default function addCarrito({ navigation }) {
   const [name, setName] = useState('');
   const [hwID, setHWID] = useState('');
   const [categoryID, setCategoryID] = useState('');
+  const [imageUri, setImageUri] = useState(null);
+  const options = {
+    mediaType: 'photo',
+    title: 'Select Image',
+    maxWidth: 2000,
+    maxHeight: 2000,
+    quality: 0.8,
+  };
+  const requestGalleryPermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        // Solicitar el permiso si no está otorgado
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'Permiso de camara',
+            message: 'Esta aplicación necesita acceso a tu camara para tomar imágenes.',
+            buttonNeutral: 'Luego',
+            buttonNegative: 'Cancelar',
+            buttonPositive: 'Aceptar',
+          }
+        );
+        return granted == PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        console.warn('Error al solicitar permisos:', err);
+        return false;
+      }
+    }
+    return true; // iOS no requiere este permiso explícitamente
+  };
 
   const selectImage = async () => {
-    const options = {
-      mediaType: 'photo',
-      quality: 1,
+    const hasPermission = await requestGalleryPermission();
+  
+    if (!hasPermission) {
+      console.log('No se otorgó permiso a la camara');
+      return;
+    }
+    console.log("ojo");
+    const result = (await launchCamera(options as any)) as {
+      assets: MimeType[];
     };
-  
-    const result = await launchImageLibrary(options);
-  
-    if (result.didCancel) {
-      console.log('El usuario canceló la selección');
-    } else if (result.errorCode) {
-      console.error('Error:', result.errorMessage);
-    } else {
-      const image = result.assets[0];
-      console.log('Imagen seleccionada:', image);
-      return image; // Retorna la imagen seleccionada
-    }
-  };
 
-  const imageToBase64 = async (imageUri) => {
-    try {
-      const base64 = await RNFS.readFile(imageUri, 'base64');
-      return base64;
-    } catch (error) {
-      console.error('Error al convertir imagen a base64:', error);
-    }
-  };
+    console.log('result' , result);
 
+  };
 
 
   const handleSubmit = async () => {
@@ -116,6 +132,13 @@ export default function addCarrito({ navigation }) {
       <View style={styles.buttonContainer}>
         <Button title="Guardar" onPress={handleSubmit} />
       </View>
+
+      <View style={styles.buttonContainer}>
+        <Button title="Tomar foto" onPress={selectImage} />
+      </View>
+
+      
+
 
       {/* Botón para regresar a la pantalla anterior */}
       <View style={styles.buttonContainer}>
