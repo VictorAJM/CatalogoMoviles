@@ -2,11 +2,44 @@ import React, { useEffect, useState } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
 import Toast from 'react-native-toast-message';
+import {launchImageLibrary} from 'react-native-image-picker';
+import RNFS from 'react-native-fs';
+
 
 export default function addCarrito({ navigation }) {
   const [name, setName] = useState('');
   const [hwID, setHWID] = useState('');
   const [categoryID, setCategoryID] = useState('');
+
+  const selectImage = async () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 1,
+    };
+  
+    const result = await launchImageLibrary(options);
+  
+    if (result.didCancel) {
+      console.log('El usuario canceló la selección');
+    } else if (result.errorCode) {
+      console.error('Error:', result.errorMessage);
+    } else {
+      const image = result.assets[0];
+      console.log('Imagen seleccionada:', image);
+      return image; // Retorna la imagen seleccionada
+    }
+  };
+
+  const imageToBase64 = async (imageUri) => {
+    try {
+      const base64 = await RNFS.readFile(imageUri, 'base64');
+      return base64;
+    } catch (error) {
+      console.error('Error al convertir imagen a base64:', error);
+    }
+  };
+
+
 
   const handleSubmit = async () => {
     if (!name || !hwID || !categoryID) {

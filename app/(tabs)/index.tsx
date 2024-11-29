@@ -12,7 +12,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
-export default async function HomeScreen() {
+export default function HomeScreen() {
   const [categories, setCategories] = useState([]);
   const navigation = useNavigation(); 
 
@@ -30,15 +30,14 @@ export default async function HomeScreen() {
     setCategories(categoriesList);
   };
 
-  // Usar useFocusEffect para volver a cargar los datos cada vez que la pantalla reciba el foco
   useFocusEffect(
     React.useCallback(() => {
-      fetchData(); // Recargar los datos al recibir el foco
+      fetchData(); 
     }, [])
   );
 
   const handleCategoryPress = (category) => {
-    navigation.navigate('CategoryDetails', category);
+    navigation.navigate('Categoría', category);
   };
 
   return (
@@ -54,13 +53,13 @@ export default async function HomeScreen() {
       <SafeAreaView style={styles.container}>
         <Button
           title="Agrega categoria"
-          onPress={() => navigation.navigate('addCategory')} // Navegar a la segunda pantalla
+          onPress={() => navigation.navigate('Agrega Categoria')} // Navegar a la segunda pantalla
         />
             <FlatList
           data={categories}
           renderItem={({ item }) => (
             <Category
-              name={item.name}
+              name={item.name}  
               year={item.year}
               current={item.current}
               total={item.total}

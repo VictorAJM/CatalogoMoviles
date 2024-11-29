@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import * as SQLite from 'expo-sqlite';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import Toast from 'react-native-toast-message';
+
+
 export default function addCategory({ navigation }) {
 
   const [name, setName] = useState('');
@@ -63,7 +65,7 @@ export default function addCategory({ navigation }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Agregar Nueva Categoría</Text>
       
       <TextInput
@@ -97,7 +99,7 @@ export default function addCategory({ navigation }) {
         <Button title="Regresar" onPress={() => navigation.goBack()} />
       </View>
       <Toast ref={(ref) => Toast.setRef(ref)} />
-    </ScrollView>
+    </SafeAreaView>
     
   );
 }
@@ -105,10 +107,7 @@ export default function addCategory({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f7f7f7',
   },
   title: {
     fontSize: 24,

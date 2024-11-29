@@ -14,6 +14,8 @@ import CategoryDetailsScreen from '@/app/CategoryScreen';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
+
+
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
@@ -32,10 +34,10 @@ export default function RootLayout() {
 
   return (
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="addCategory" component={addCategory} />
-        <Stack.Screen name="CategoryDetails" component={CategoryDetailsScreen} />
-        <Stack.Screen name="addCarrito" component={addCarrito} />
+        <Stack.Screen name="Menu" component={HomeScreen} />
+        <Stack.Screen name="Agrega Categoria" component={addCategory} />
+        <Stack.Screen name="Categoría" component={CategoryDetailsScreen} />
+        <Stack.Screen name="Agrega Carrito" component={addCarrito} />
       </Stack.Navigator>
   );
 }
