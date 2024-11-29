@@ -16,7 +16,7 @@
 - [X] **Configurar la base de datos SQLite:**
   - **Tabla Categorías**
 
-- [ ] **Configurar la base de datos SQLite:**
+- [X] **Configurar la base de datos SQLite:**
   - **Tabla Productos**
 
 ---
@@ -38,7 +38,7 @@
 
 ### **3. Desarrollo de la Pantalla de Productos**
 
-- [ ] **Diseño del UI:**
+- [X] **Diseño del UI:**
   - Crear una lista estilizada para mostrar productos de la categoría seleccionada.
   - Añadir un campo de entrada y un botón para agregar nuevos productos.
 - [ ] **Funcionalidad:**
