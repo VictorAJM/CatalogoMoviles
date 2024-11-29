@@ -7,16 +7,36 @@ import { ThemedView } from '@/components/ThemedView';
 import Category from '@/components/Category';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import React, { useState, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
 export default async function HomeScreen() {
-  const categories = [
-    { id: '1', name: 'Technology', year: 2024, current:0, total: 15 },
-  ];
-
+  const [categories, setCategories] = useState([]);
   const navigation = useNavigation(); 
+
+  const fetchData = async () => {
+    const db = await SQLite.openDatabaseAsync('databaseName');
+    const allRows = await db.getAllAsync('SELECT * FROM testCategory');
+    const categoriesList = allRows.map((row) => ({
+      id: row.id, // Asumiendo que tienes un campo 'id' en tu base de datos
+      name: row.name,
+      year: row.year,
+      current: row.current,
+      total: row.total,
+    }));
+
+    setCategories(categoriesList);
+  };
+
+  // Usar useFocusEffect para volver a cargar los datos cada vez que la pantalla reciba el foco
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData(); // Recargar los datos al recibir el foco
+    }, [])
+  );
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -32,7 +52,7 @@ export default async function HomeScreen() {
           title="Agrega categoria"
           onPress={() => navigation.navigate('addCategory')} // Navegar a la segunda pantalla
         />
-        <FlatList
+            <FlatList
           data={categories}
           renderItem={({ item }) => (
             <Category
@@ -43,9 +63,9 @@ export default async function HomeScreen() {
             />
           )}
           keyExtractor={(item) => item.id}
-          numColumns={2} // Configuración para 2 columnas
-          columnWrapperStyle={styles.row} // Espaciado entre filas
-        />
+          numColumns={2} // Config for 2 columns
+          columnWrapperStyle={styles.row} // Spacing between rows
+          />
       </SafeAreaView>
     </ParallaxScrollView>
   );

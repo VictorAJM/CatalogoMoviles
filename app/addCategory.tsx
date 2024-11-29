@@ -20,6 +20,19 @@ export default function addCategory({ navigation }) {
   };
 
   const handleSubmit = async () => {
+    if (!name || !year || !quantity) {
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Campos incompletos',
+        text2: 'Por favor, llena todos los campos antes de guardar.',
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+      return; // No continuar si algún campo está vacío
+    }
+
+
     const db = await SQLite.openDatabaseAsync('databaseName');
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS testCategory (
@@ -27,10 +40,10 @@ export default function addCategory({ navigation }) {
         name TEXT NOT NULL, 
         year INTEGER,
         current INTEGER,
-        quantity INTEGER);
+        total INTEGER);
       `);
-      await db.runAsync('INSERT INTO testCategory (name,year,current, quantity) VALUES (?, ?,?, ?)', "a",20,0, 1);
       const allRows = await db.getAllAsync('SELECT * FROM testCategory');
+      
       for (const row of allRows) {
         
         if (row.name == name) {
@@ -47,7 +60,7 @@ export default function addCategory({ navigation }) {
         }
       }
       
-      const result = await db.runAsync('INSERT INTO testCategory (name,year,current, quantity) VALUES (?, ?, ?,?)', name,year,0, quantity);
+      const result = await db.runAsync('INSERT INTO testCategory (name,year,current, total) VALUES (?, ?, ?, ?)', name,year,0, quantity);
       //mostrar toast de que funciono correctamente
       Toast.show({
         type: 'success', // Tipo de Toast, 'success' para éxito
