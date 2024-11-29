@@ -5,16 +5,17 @@ interface CarritoProps {
   name: string;
   year: number;
   category: string;
+  categoryTotal: number;
   categoryID: number;
   hwID: string;
 }
 
 
 const Carrito: React.FC<CarritoProps> = ({
-  name, year, category, categoryID, hwID
+  name, year, category, categoryTotal, categoryID, hwID
 }) => {
   return <View style={styles.card}>
-    <Text style={styles.categoryTitle}>{`${category} - ${year}  (${categoryID}/total)`}</Text>
+    <Text style={styles.categoryTitle}>{`${category} - ${year}  (${categoryID}/${categoryTotal})`}</Text>
     <Text style={styles.title}>{name}</Text>
     <Text style={styles.hwText}>{hwID}</Text>
   </View>;
