@@ -26,9 +26,10 @@ export default function addCategory({ navigation }) {
         id INTEGER PRIMARY KEY NOT NULL,
         name TEXT NOT NULL, 
         year INTEGER,
+        current INTEGER,
         quantity INTEGER);
       `);
-      await db.runAsync('INSERT INTO testCategory (name,year,quantity) VALUES (?, ?, ?)', "a",20, 1);
+      await db.runAsync('INSERT INTO testCategory (name,year,current, quantity) VALUES (?, ?,?, ?)', "a",20,0, 1);
       const allRows = await db.getAllAsync('SELECT * FROM testCategory');
       for (const row of allRows) {
         
@@ -46,7 +47,7 @@ export default function addCategory({ navigation }) {
         }
       }
       
-      const result = await db.runAsync('INSERT INTO testCategory (name,year,quantity) VALUES (?, ?, ?)', name,year, quantity);
+      const result = await db.runAsync('INSERT INTO testCategory (name,year,current, quantity) VALUES (?, ?, ?,?)', name,year,0, quantity);
       //mostrar toast de que funciono correctamente
       Toast.show({
         type: 'success', // Tipo de Toast, 'success' para éxito

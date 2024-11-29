@@ -13,10 +13,7 @@ const Stack = createNativeStackNavigator();
 
 export default async function HomeScreen() {
   const categories = [
-    { id: '1', name: 'Technology', year: 2024, objectCount: 15 },
-    { id: '2', name: 'Science', year: 2023, objectCount: 20 },
-    { id: '3', name: 'Art', year: 2022, objectCount: 8 },
-    { id: '4', name: 'History', year: 2021, objectCount: 12 },
+    { id: '1', name: 'Technology', year: 2024, current:0, total: 15 },
   ];
 
   const navigation = useNavigation(); 
@@ -41,7 +38,8 @@ export default async function HomeScreen() {
             <Category
               name={item.name}
               year={item.year}
-              objectCount={item.objectCount}
+              current={item.current}
+              total={item.total}
             />
           )}
           keyExtractor={(item) => item.id}

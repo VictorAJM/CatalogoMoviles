@@ -4,15 +4,16 @@ import { Text, View, StyleSheet } from 'react-native';
 interface CategoryProps {
   name: string;
   year: number;
-  objectCount: number;
+  current: number;
+  total: number;
 }
 
-const Category: React.FC<CategoryProps> = ({ name, year, objectCount }) => {
+const Category: React.FC<CategoryProps> = ({ name, year, current, total }) => {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{name}</Text>
       <Text>Year: {year}</Text>
-      <Text>Objects: {objectCount}</Text>
+      <Text>{`(${current}/${total})`}</Text>
     </View>
   );
 };
