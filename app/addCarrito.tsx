@@ -5,7 +5,9 @@ import Toast from 'react-native-toast-message';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { PermissionsAndroid, Platform } from 'react-native';
 
-export default function addCarrito({ navigation }) {
+export default function addCarrito({ route, navigation }) {
+
+  const { categoryName } = route.params;
   const [name, setName] = useState('');
   const [hwID, setHWID] = useState('');
   const [categoryID, setCategoryID] = useState('');
@@ -76,6 +78,7 @@ export default function addCarrito({ navigation }) {
         id INTEGER PRIMARY KEY NOT NULL,
         name TEXT NOT NULL, 
         hwID TEXT NOT NULL,
+        category TEXT,
         categoryID INTEGER);
       `);
     const allRows = await db.getAllAsync('SELECT * FROM testCarritos');
@@ -92,7 +95,8 @@ export default function addCarrito({ navigation }) {
         return;
       }
     }  
-    const result = await db.runAsync('INSERT INTO testCarritos (name,hwID,categoryID) VALUES (?, ?, ?)', name,hwID, categoryID);
+    const result = await db.runAsync('INSERT INTO testCarritos (name,hwID,category, categoryID) VALUES (?, ?, ?, ?)', name,hwID,categoryName, categoryID);
+    await db.runAsync(`UPDATE testCategory SET current = current + 1 WHERE name = ?`,categoryName );
     Toast.show({
       type: 'success', // Tipo de Toast, 'success' para éxito
       position: 'top',

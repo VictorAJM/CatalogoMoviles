@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import * as SQLite from 'expo-sqlite';
 import {
   FlatList,
   SafeAreaView,
@@ -13,32 +15,34 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function CategoryDetailsScreen({ route, navigation })  {
   const { id, name, year, current, total } = route.params; // Extraer los parámetros
-  const [carritos, setCarritos] = useState([
-    {
-      id: 1,
-      name: 'Carrito A',
-      year: 2023,
-      category: 'Sports',
-      categoryID: 1,
-      hwID: 'HW123',
-    },
-    {
-      id: 2,
-      name: 'Carrito B',
-      year: 2022,
-      category: 'Classics',
-      categoryID: 2,
-      hwID: 'HW124',
-    },
-    // Agrega más objetos de carrito según sea necesario
-  ]);
+  const [carritos, setCarritos] = useState([]);
 
+  const fetchData = async () => {
+    const db = await SQLite.openDatabaseAsync('databaseName');
+    const allRows = await db.getAllAsync('SELECT * FROM testCarritos');
+    const carritosList = allRows.map((row) => ({
+      id: row.id, // Asumiendo que tienes un campo 'id' en tu base de datos
+      name: row.name,
+      year: year,
+      category: row.category,
+      categoryID: row.categoryID,
+      hwID: row.hwID,
+    })).filter((row)=> row.category == name);
+
+    setCarritos(carritosList);
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData(); 
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.container}>
       <Button
         title="Agrega carrito"
-        onPress={() => navigation.navigate('Agrega Carrito')} // Navegar a la pantalla de agregar carrito
+        onPress={() => navigation.navigate('Agrega Carrito', {categoryName: name})} // Navegar a la pantalla de agregar carrito
       />
       <FlatList
         data={carritos}
@@ -46,7 +50,7 @@ export default function CategoryDetailsScreen({ route, navigation })  {
           <Carrito
             name={item.name}
             year={item.year}
-            category={name}
+            category={item.category}
             categoryTotal={total}
             categoryID={item.categoryID}
             hwID={item.hwID}
