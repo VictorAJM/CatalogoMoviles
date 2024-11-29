@@ -37,6 +37,10 @@ export default async function HomeScreen() {
     }, [])
   );
 
+  const handleCategoryPress = (category) => {
+    navigation.navigate('CategoryDetails', category);
+  };
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -60,6 +64,7 @@ export default async function HomeScreen() {
               year={item.year}
               current={item.current}
               total={item.total}
+              onPress= {() => handleCategoryPress(item)}
             />
           )}
           keyExtractor={(item) => item.id}

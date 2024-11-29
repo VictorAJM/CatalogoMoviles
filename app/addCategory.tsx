@@ -94,7 +94,7 @@ export default function addCategory({ navigation }) {
 
       <TextInput
         style={styles.input}
-        placeholder="cantidad de objetos en la categoría"
+        placeholder="tamaño de la categoria"
         keyboardType="numeric"
         value={quantity}
         onChangeText={setQuantity}

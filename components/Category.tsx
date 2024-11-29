@@ -1,24 +1,32 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, GestureResponderEvent  } from 'react-native';
 
 interface CategoryProps {
   name: string;
   year: number;
   current: number;
   total: number;
+  onPress: () => void; 
 }
 
-const Category: React.FC<CategoryProps> = ({ name, year, current, total }) => {
+const Category: React.FC<CategoryProps> = ({ name, year, current, total, onPress }) => {
+
   return (
-    <View style={styles.card}>
-      <Text style={styles.title}>{name}</Text>
-      <Text>Year: {year}</Text>
-      <Text>{`(${current}/${total})`}</Text>
-    </View>
+    <TouchableOpacity onPress={onPress} style={styles.card}>
+      <View style={styles.view}>
+        <Text style={styles.title}>{name}</Text>
+        <Text>Year: {year}</Text>
+        <Text>{`(${current}/${total})`}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+    alignItems: 'center',
+  },
   card: {
     flex: 1,
     margin: 10,
