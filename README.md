@@ -13,23 +13,25 @@
 - [X] **Definir la estructura del proyecto:**
   - Crear carpetas base:
     - `screens`, `components`, `services`, y `assets`.
-- [ ] **Configurar la base de datos SQLite:**
+- [X] **Configurar la base de datos SQLite:**
   - **Tabla Categorías**
+
+- [ ] **Configurar la base de datos SQLite:**
   - **Tabla Productos**
 
 ---
 
 ### **2. Desarrollo de Pantalla Principal**
 
-- [ ] **Diseño del UI:**
+- [X] **Diseño del UI:**
   - Crear la pantalla inicial para mostrar categorías como cuadros o tarjetas.
   - Añadir un campo de entrada y un botón para agregar nuevas categorías.
-- [ ] **Funcionalidad:**
+- [X] **Funcionalidad:**
   - Conectar la pantalla inicial a SQLite:
     - Consultar y mostrar las categorías disponibles.
     - Permitir agregar nuevas categorías (validar entradas para evitar duplicados).
   - Implementar navegación a la pantalla de productos al seleccionar una categoría.
-- [ ] **Pruebas:**
+- [X] **Pruebas:**
   - Verificar que las categorías se guardan y se muestran correctamente.
 
 ---
