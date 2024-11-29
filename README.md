@@ -41,19 +41,22 @@
 - [X] **Diseño del UI:**
   - Crear una lista estilizada para mostrar productos de la categoría seleccionada.
   - Añadir un campo de entrada y un botón para agregar nuevos productos.
-- [ ] **Funcionalidad:**
+- [X] **Funcionalidad:**
   - Consultar productos relacionados a la categoría seleccionada desde SQLite.
   - Permitir agregar nuevos productos con:
     - Nombre
     - Descripción
-    - Imagen (almacenada como BLOB en SQLite).
   - Asociar productos a categorías mediante claves foráneas.
-- [ ] **Estilización:**
+
+- [ ] **Funcionalidad:**
+    - Imagen (almacenada como BLOB en SQLite).
+
+- [X] **Estilización:**
   - Diseñar la lista de productos mostrando:
     - Nombre
     - Descripción
     - Imagen en miniatura.
-- [ ] **Pruebas:**
+- [X] **Pruebas:**
   - Verificar que los productos se muestran y actualizan correctamente.
 
 ---
@@ -63,8 +66,6 @@
 - [ ] **Optimización de la Interfaz:**
   - Ajustar el diseño para dispositivos móviles.
   - Implementar un tema de colores y estilos consistentes.
-- [ ] **Animaciones:**
-  - Añadir transiciones al abrir pantallas o actualizar listas.
 
 ---
 
