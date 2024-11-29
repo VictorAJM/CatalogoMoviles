@@ -6,9 +6,9 @@ import {
   Button,
   View,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import Carrito from '@/components/Carrito'; 
-
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const CategoryDetailsScreen = ({ route }) => {
   const { name, year, current, total } = route.params; // Extraer los parámetros
   const navigation = useNavigation();
@@ -37,7 +37,7 @@ const CategoryDetailsScreen = ({ route }) => {
     <SafeAreaView style={styles.container}>
       <Button
         title="Agrega carrito"
-        //onPress={() => navigation.navigate('addCarrito')} // Navegar a la pantalla de agregar carrito
+        onPress={() => navigation.navigate('addCarrito')} // Navegar a la pantalla de agregar carrito
       />
       <FlatList
         data={carritos}

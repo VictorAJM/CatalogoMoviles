@@ -9,6 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import HomeScreen from './(tabs)';
 import addCategory from './addCategory';
+import addCarrito from './addCarrito';
 import CategoryDetailsScreen from '@/app/CategoryScreen'; 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -34,6 +35,7 @@ export default function RootLayout() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="addCategory" component={addCategory} />
         <Stack.Screen name="CategoryDetails" component={CategoryDetailsScreen} />
+        <Stack.Screen name="addCarrito" component={addCarrito} />
       </Stack.Navigator>
   );
 }

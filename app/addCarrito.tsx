@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
 import Toast from 'react-native-toast-message';
-export default function addCategory({ navigation }) {
 
+export default function addCarrito({ navigation }) {
   const [name, setName] = useState('');
-  const [year, setYear] = useState('');
-  const [quantity, setQuantity] = useState('');
+  const [hwID, setHWID] = useState('');
+  const [categoryID, setCategoryID] = useState('');
 
   const handleSubmit = async () => {
-    if (!name || !year || !quantity) {
+    if (!name || !hwID || !categoryID) {
       Toast.show({
         type: 'error',
         position: 'top',
@@ -21,50 +21,43 @@ export default function addCategory({ navigation }) {
       return; 
     }
 
-
     const db = await SQLite.openDatabaseAsync('databaseName');
     await db.execAsync(`
-      CREATE TABLE IF NOT EXISTS testCategory (
+      CREATE TABLE IF NOT EXISTS testCarritos (
         id INTEGER PRIMARY KEY NOT NULL,
         name TEXT NOT NULL, 
-        year INTEGER,
-        current INTEGER,
-        total INTEGER);
+        hwID TEXT NOT NULL,
+        categoryID INTEGER);
       `);
-      const allRows = await db.getAllAsync('SELECT * FROM testCategory');
-      
-      for (const row of allRows) {
-        
-        if (row.name == name) {
-          console.log(row.name);
-          Toast.show({
-            type: 'error', // Tipo de Toast, 'error' para error
-            position: 'top', // Posición del Toast en la pantalla
-            text1: 'Categoría ya existente',
-            text2: 'La categoría con este nombre ya está registrada.',
-            visibilityTime: 3000,
-            autoHide: true,
-          });
-          return;
-        }
+    const allRows = await db.getAllAsync('SELECT * FROM testCarritos');
+    for (const row of allRows) {
+      if (row.name == name || row.hwID == hwID || row.categoryID == categoryID) {
+        Toast.show({
+          type: 'error', // Tipo de Toast, 'error' para error
+          position: 'top', // Posición del Toast en la pantalla
+          text1: 'El carrito ya ha sido agregado',
+          text2: 'Revisa los datos ingresados',
+          visibilityTime: 3000,
+          autoHide: true,
+        });
+        return;
       }
-      
-      const result = await db.runAsync('INSERT INTO testCategory (name,year,current, total) VALUES (?, ?, ?, ?)', name,year,0, quantity);
-      //mostrar toast de que funciono correctamente
-      Toast.show({
-        type: 'success', // Tipo de Toast, 'success' para éxito
-        position: 'top',
-        text1: 'Categoría guardada',
-        text2: 'La categoría se ha guardado correctamente.',
-        visibilityTime: 3000,
-        autoHide: true,
-      });
-      return;
-  };
+    }  
+    const result = await db.runAsync('INSERT INTO testCarritos (name,hwID,categoryID) VALUES (?, ?, ?)', name,hwID, categoryID);
+    Toast.show({
+      type: 'success', // Tipo de Toast, 'success' para éxito
+      position: 'top',
+      text1: 'Carrito guardada',
+      text2: 'El carrito se ha guardado correctamente.',
+      visibilityTime: 3000,
+      autoHide: true,
+    });
+    return;
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Agregar Nueva Categoría</Text>
+      <Text style={styles.title}>Agregar Nuevo Carrito</Text>
       
       <TextInput
         style={styles.input}
@@ -75,18 +68,17 @@ export default function addCategory({ navigation }) {
 
       <TextInput
         style={styles.input}
-        placeholder="Año"
-        keyboardType="numeric"
-        value={year}
-        onChangeText={setYear}
+        placeholder="Hot Wheels ID"
+        value={hwID}
+        onChangeText={setHWID}
       />
 
       <TextInput
         style={styles.input}
-        placeholder="tamaño de la categoria"
+        placeholder="ID en la categoria"
         keyboardType="numeric"
-        value={quantity}
-        onChangeText={setQuantity}
+        value={categoryID}
+        onChangeText={setCategoryID}
       />
       <View style={styles.buttonContainer}>
         <Button title="Guardar" onPress={handleSubmit} />
@@ -98,7 +90,6 @@ export default function addCategory({ navigation }) {
       </View>
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </ScrollView>
-    
   );
 }
 
@@ -127,7 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   buttonContainer: {
-    marginTop: 20,  // Agregar espacio entre los botones
-    width: '50%',  // Asegura que los botones usen todo el ancho disponible
+    marginTop: 20,  
+    width: '50%',
   },
 });
