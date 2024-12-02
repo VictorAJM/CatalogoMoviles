@@ -12,7 +12,8 @@ export default function addCarrito({ route, navigation }) {
   const [name, setName] = useState('');
   const [hwID, setHWID] = useState('');
   const [categoryID, setCategoryID] = useState('');
-  const [message, setMessage] = useState("Sin imagen cargada");
+  const [message, setMessage] = useState("Sin imagen gaurdada");
+  const [photoMessage, setPhotoMessage] = useState("Tomar foto");
   const [imageUri, setImageUri] = useState(null);
   const options = {
     mediaType: 'photo',
@@ -25,6 +26,10 @@ export default function addCarrito({ route, navigation }) {
   const updateMessage = () => {
     setMessage("Imagen Guardada"); // Cambia a un nuevo mensaje
   };
+
+  const updatePhotoMessage = () => {
+    setPhotoMessage("Volver a tomar foto");
+  }
 
   const requestGalleryPermission = async () => {
     if (Platform.OS === 'android') {
@@ -64,6 +69,7 @@ export default function addCarrito({ route, navigation }) {
     if (!result.didCancel && result.assets && result.assets.length > 0) {
       const image = result.assets[0];
       updateMessage();
+      updatePhotoMessage();
       setImageUri(image.uri);
       return image;
     }
@@ -138,6 +144,15 @@ export default function addCarrito({ route, navigation }) {
     return;
   }
 
+  const getMessageStyle = () => {
+    if (!message) return {};
+    if (message.includes("Sin")) {
+      return styles.errorMessage; 
+    } else {
+      return styles.successMessage; 
+    }
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Agregar Nuevo Carrito</Text>
@@ -145,6 +160,7 @@ export default function addCarrito({ route, navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Nombre"
+        placeholderTextColor="#888"
         value={name}
         onChangeText={setName}
       />
@@ -152,6 +168,7 @@ export default function addCarrito({ route, navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Hot Wheels ID"
+        placeholderTextColor="#888"
         value={hwID}
         onChangeText={setHWID}
       />
@@ -160,30 +177,30 @@ export default function addCarrito({ route, navigation }) {
         style={styles.input}
         placeholder="ID en la categoria"
         keyboardType="numeric"
+        placeholderTextColor="#888"
         value={categoryID}
         onChangeText={setCategoryID}
       />
-      <Text>
-        {message}
-      </Text>
+
+      {message ? <Text style={[styles.message, getMessageStyle()]}>{message}</Text> : null}
+
+
       <View style={styles.buttonContainer}>
-        <Button title="Guardar" onPress={handleSubmit} />
+        <Button title={photoMessage} onPress={selectImage} color="#2196F3" />
+      </View>
+
+      {imageUri ? (
+        <Image source={{ uri: imageUri }} style={styles.image} />
+      ) : null}
+
+      <View style={styles.buttonContainer}>
+        <Button title="Guardar" onPress={handleSubmit} color="#4CAF50" />
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title="Tomar foto" onPress={selectImage} />
+        <Button title="Regresar" onPress={() => navigation.goBack()} color="#f44336" />
       </View>
 
-      <Image
-      source={{uri: imageUri}}
-      style={{width: 200, height: 200}}
-      />
-
-
-      {/* Botón para regresar a la pantalla anterior */}
-      <View style={styles.buttonContainer}>
-        <Button title="Regresar" onPress={() => navigation.goBack()} />
-      </View>
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </ScrollView>
   );
@@ -192,29 +209,58 @@ export default function addCarrito({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#f7f7f7',
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#333',
+    textAlign: 'center', 
   },
   input: {
     width: '100%',
-    height: 45,
+    height: 50,
     marginBottom: 15,
-    paddingLeft: 10,
+    paddingLeft: 15,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 5,
+    borderRadius: 10,
     backgroundColor: '#fff',
+    fontSize: 16,
+    color: '#333',
+  },
+  message: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    padding: 5,
+    borderRadius: 5,
+    textAlign: 'center',
+  },
+  errorMessage: {
+    color: '#f44336', 
+    backgroundColor: '#ffebee', 
+  },
+  successMessage: {
+    color: '#4CAF50',  
+    backgroundColor: '#e8f5e9', 
   },
   buttonContainer: {
-    marginTop: 20,  
-    width: '50%',
+    marginTop: 20,
+    width: '60%',
+    borderRadius: 8,
+    overflow: 'hidden', 
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginTop: 20,
+    borderRadius: 10, 
+    borderWidth: 1,
+    borderColor: '#ccc', 
   },
 });
