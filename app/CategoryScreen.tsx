@@ -6,7 +6,9 @@ import {
   SafeAreaView,
   StyleSheet,
   Button,
+  Text,
   View,
+  TouchableOpacity,
 } from 'react-native';
 import Carrito from '@/components/Carrito'; 
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
@@ -42,11 +44,15 @@ export default function CategoryDetailsScreen({ route, navigation })  {
 
   return (
     <SafeAreaView style={styles.container}>
-      {current < total && (      <Button
-        title="Agrega carrito"
-        onPress={() => navigation.navigate('Agrega Carrito', {categoryName: name})} // Navegar a la pantalla de agregar carrito
-      />)}
-
+      {current < total && (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Agrega Carrito', { categoryName: name })}
+        >
+          <Text style={styles.buttonText}>Agrega carrito</Text>
+        </TouchableOpacity>
+      )}
+  
       <FlatList
         data={carritos}
         renderItem={({ item }) => (
@@ -61,6 +67,8 @@ export default function CategoryDetailsScreen({ route, navigation })  {
           />
         )}
         keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.listContainer}  // Estilo adicional para el contenido de la lista
+        ItemSeparatorComponent={() => <View style={styles.separator} />}  // Separadores entre elementos
       />
     </SafeAreaView>
   );
@@ -69,12 +77,29 @@ export default function CategoryDetailsScreen({ route, navigation })  {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    backgroundColor: '#f8f8f8',  // Fondo suave para la pantalla
   },
-  title: {
-    fontSize: 24,
+  button: {
+    backgroundColor: '#4CAF50',  // Color verde para el botón
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    marginBottom: 20,
+    alignItems: 'center',
+    elevation: 3,  // Sombra para el botón
+  },
+  buttonText: {
+    fontSize: 18,
+    color: '#fff',  // Texto blanco
     fontWeight: 'bold',
-    marginBottom: 10,
   },
-
+  listContainer: {
+    paddingBottom: 20,  // Espacio en la parte inferior de la lista
+  },
+  separator: {
+    height: 10,  // Separador entre items
+    backgroundColor: '#f0f0f0',  // Color del separador
+  },
 });
