@@ -66,6 +66,8 @@
 - [ ] **Optimización de la Interfaz:**
   - Ajustar el diseño para dispositivos móviles.
   - Implementar un tema de colores y estilos consistentes.
+  - Mostrar carritos con imagen
+  - Mostrar tabs y todos los carritos
 
 ---
 
