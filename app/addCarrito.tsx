@@ -71,7 +71,7 @@ export default function addCarrito({ route, navigation }) {
 
 
   const handleSubmit = async () => {
-    if (!name || !hwID || !categoryID) {
+    if (!name || !hwID || !categoryID ||!imageUri) {
       Toast.show({
         type: 'error',
         position: 'top',
@@ -89,7 +89,6 @@ export default function addCarrito({ route, navigation }) {
     const binaryData = `data:image/jpeg;base64,${base64Data}`;
 
     await db.execAsync(`
-      DROP TABLE IF EXISTS testCarritos;
       CREATE TABLE IF NOT EXISTS testCarritos (
         id INTEGER PRIMARY KEY NOT NULL,
         image BLOB,
@@ -100,7 +99,7 @@ export default function addCarrito({ route, navigation }) {
       `);
     const allRows = await db.getAllAsync('SELECT * FROM testCarritos');
     for (const row of allRows) {
-      if (row.name == name || row.hwID == hwID || row.categoryID == categoryID) {
+      if (row.name == name || row.hwID == hwID || (row.categoryID == categoryID && row.category == categoryName)) {
         Toast.show({
           type: 'error', // Tipo de Toast, 'error' para error
           position: 'top', // Posición del Toast en la pantalla
