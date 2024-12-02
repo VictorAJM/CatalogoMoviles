@@ -40,8 +40,8 @@ export default function addCategory({ navigation }) {
         if (row.name == name) {
           console.log(row.name);
           Toast.show({
-            type: 'error', // Tipo de Toast, 'error' para error
-            position: 'top', // Posición del Toast en la pantalla
+            type: 'error', 
+            position: 'top',
             text1: 'Categoría ya existente',
             text2: 'La categoría con este nombre ya está registrada.',
             visibilityTime: 3000,
@@ -52,9 +52,8 @@ export default function addCategory({ navigation }) {
       }
       
       const result = await db.runAsync('INSERT INTO testCategory (name,year,current, total) VALUES (?, ?, ?, ?)', name,year,0, quantity);
-      //mostrar toast de que funciono correctamente
       Toast.show({
-        type: 'success', // Tipo de Toast, 'success' para éxito
+        type: 'success', 
         position: 'top',
         text1: 'Categoría guardada',
         text2: 'La categoría se ha guardado correctamente.',
@@ -67,10 +66,11 @@ export default function addCategory({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Agregar Nueva Categoría</Text>
-      
+
       <TextInput
         style={styles.input}
         placeholder="Nombre"
+        placeholderTextColor="#aaa"
         value={name}
         onChangeText={setName}
       />
@@ -79,28 +79,34 @@ export default function addCategory({ navigation }) {
         style={styles.input}
         placeholder="Año"
         keyboardType="numeric"
+        placeholderTextColor="#aaa"
         value={year}
         onChangeText={setYear}
       />
 
       <TextInput
         style={styles.input}
-        placeholder="tamaño de la categoria"
+        placeholder="Tamaño de la categoría"
         keyboardType="numeric"
+        placeholderTextColor="#aaa"
         value={quantity}
         onChangeText={setQuantity}
       />
+
       <View style={styles.buttonContainer}>
-        <Button title="Guardar" onPress={handleSubmit} />
+        <View style={styles.buttonWrapper}>
+          <Button title="Guardar" onPress={handleSubmit} color="#4CAF50" />
+        </View>
       </View>
 
-      {/* Botón para regresar a la pantalla anterior */}
       <View style={styles.buttonContainer}>
-        <Button title="Regresar" onPress={() => navigation.goBack()} />
+        <View style={styles.buttonWrapper}>
+          <Button title="Regresar" onPress={() => navigation.goBack()} color="#f44336" />
+        </View>
       </View>
+
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </SafeAreaView>
-    
   );
 }
 
@@ -108,25 +114,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#f9f9f9', 
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#333',
+    textAlign: 'center',
   },
   input: {
     width: '100%',
-    height: 45,
+    height: 50,
     marginBottom: 15,
-    paddingLeft: 10,
+    paddingLeft: 15,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 5,
+    borderRadius: 10,
     backgroundColor: '#fff',
+    fontSize: 16,
+    color: '#333',
   },
   buttonContainer: {
-    marginTop: 20,  // Agregar espacio entre los botones
-    width: '50%',  // Asegura que los botones usen todo el ancho disponible
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  buttonWrapper: {
+    width: '60%', 
+    borderRadius: 8,
+    overflow: 'hidden', 
   },
 });
