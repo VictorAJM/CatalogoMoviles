@@ -28,7 +28,8 @@ export default function CategoryDetailsScreen({ route, navigation })  {
       category: row.category,
       categoryID: row.categoryID,
       hwID: row.hwID,
-    })).filter((row)=> row.category == name);
+    })).filter((row)=> row.category == name)
+    .sort((a, b) => a.categoryID - b.categoryID);
 
     setCarritos(carritosList);
   };

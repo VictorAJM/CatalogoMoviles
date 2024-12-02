@@ -19,10 +19,10 @@ const Carrito: React.FC<CarritoProps> = ({
   <Image source={{ uri: image }} style={styles.image} />
   <View style={styles.textContainer}>
     <Text style={styles.categoryTitle}>
-      {`${category} - ${year}  (${categoryID}/${categoryTotal})`}
+      {`${category} - ${year}   (${categoryID}/${categoryTotal})`}
     </Text>
     <Text style={styles.title}>Nombre: {name}</Text>
-    <Text style={styles.hwText}>hwID: {hwID}</Text>
+    <Text style={styles.hwText}>Hot Wheels ID: {hwID}</Text>
   </View>
 </View>
 }
