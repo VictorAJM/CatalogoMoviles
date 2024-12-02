@@ -7,37 +7,25 @@ import 'react-native-reanimated';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import HomeScreen from './(tabs)';
-import addCategory from './addCategory';
-import addCarrito from './addCarrito';
+import HomeScreen from './index';
+import AddCategory from './addCategory';
+import AddCarrito from './addCarrito';
 import CategoryDetailsScreen from '@/app/CategoryScreen'; 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
 
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
+export function RootLayout() {
 
   return (
-      <Stack.Navigator>
+    <Stack.Navigator>
         <Stack.Screen name="Menu" component={HomeScreen} />
-        <Stack.Screen name="Agrega Categoria" component={addCategory} />
-        <Stack.Screen name="Categoría" component={CategoryDetailsScreen} />
-        <Stack.Screen name="Agrega Carrito" component={addCarrito} />
+        <Stack.Screen name="Agrega Categoria" component={AddCategory} />
+        <Stack.Screen name="Categoria" component={CategoryDetailsScreen} />
+        <Stack.Screen name="Agrega Carrito" component={AddCarrito} />
       </Stack.Navigator>
   );
 }
+
+export default RootLayout;

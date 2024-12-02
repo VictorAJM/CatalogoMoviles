@@ -4,7 +4,7 @@ import { View, Text, TextInput, Button, StyleSheet, ScrollView, SafeAreaView } f
 import Toast from 'react-native-toast-message';
 
 
-export default function addCategory({ navigation }) {
+export default function AddCategory({ navigation }) {
 
   const [name, setName] = useState('');
   const [year, setYear] = useState('');

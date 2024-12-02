@@ -6,13 +6,13 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { PermissionsAndroid, Platform } from 'react-native';
 import { readFile } from 'react-native-fs';
 
-export default function addCarrito({ route, navigation }) {
+export default function AddCarrito({ route, navigation }) {
 
   const { categoryName } = route.params;
   const [name, setName] = useState('');
   const [hwID, setHWID] = useState('');
   const [categoryID, setCategoryID] = useState('');
-  const [message, setMessage] = useState("Sin imagen gaurdada");
+  const [message, setMessage] = useState("Sin imagen guardada");
   const [photoMessage, setPhotoMessage] = useState("Tomar foto");
   const [imageUri, setImageUri] = useState(null);
   const options = {

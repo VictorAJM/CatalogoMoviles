@@ -8,6 +8,9 @@ import Category from '@/components/Category';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState, useEffect } from 'react';
+import AddCategory from '../AddCategory';
+import AddCarrito from '../AddCarrito';
+import CategoryDetailsScreen from '@/app/CategoryScreen'; 
 import { useFocusEffect } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
@@ -37,7 +40,7 @@ export default function HomeScreen() {
   );
 
   const handleCategoryPress = (category) => {
-    navigation.navigate('Categoría', category);
+    navigation.navigate('Categoria', category);
   };
 
   return (
