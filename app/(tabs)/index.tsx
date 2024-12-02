@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Platform, SafeAreaView,FlatList,View, Button, Text   } from 'react-native';
+import { Image, StyleSheet, Platform, SafeAreaView,FlatList,View, Button, Text, TouchableOpacity   } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -51,10 +51,14 @@ export default function HomeScreen() {
         />
       }>
       <SafeAreaView style={styles.container}>
-        <Button
-          title="Agrega categoria"
-          onPress={() => navigation.navigate('Agrega Categoria')} // Navegar a la segunda pantalla
-        />
+            <View style={styles.containerView}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate('Agrega Categoria')}
+            >
+              <Text style={styles.buttonText}>Agrega categoria</Text>
+            </TouchableOpacity>
+          </View>
             <FlatList
           data={categories}
           renderItem={({ item }) => (
@@ -76,6 +80,24 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  containerView: {
+    flex: 1,                      // Ocupa toda la pantalla
+    justifyContent: 'center',     // Centra verticalmente
+    alignItems: 'center',         // Centra horizontalmente
+  },
+  button: {
+    height: 60,                   // Más alto
+    width: 200,                   // Menos ancho
+    backgroundColor: '#7594E9',   // Color de fondo
+    borderRadius: 8,              // Bordes redondeados
+    justifyContent: 'center',     // Centra el texto dentro del botón
+    alignItems: 'center',         // Centra el texto dentro del botón
+  },
+  buttonText: {
+    color: '#fff',                // Color del texto
+    fontSize: 18,                 // Tamaño del texto
+    fontWeight: 'bold',           // Negrita
+  },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
