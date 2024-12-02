@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import * as SQLite from 'expo-sqlite';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ScrollView, Image } from 'react-native';
 import Toast from 'react-native-toast-message';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { PermissionsAndroid, Platform } from 'react-native';
+import { readFile } from 'react-native-fs';
 
 export default function addCarrito({ route, navigation }) {
 
@@ -11,6 +12,7 @@ export default function addCarrito({ route, navigation }) {
   const [name, setName] = useState('');
   const [hwID, setHWID] = useState('');
   const [categoryID, setCategoryID] = useState('');
+  const [message, setMessage] = useState("Sin imagen cargada");
   const [imageUri, setImageUri] = useState(null);
   const options = {
     mediaType: 'photo',
@@ -19,6 +21,11 @@ export default function addCarrito({ route, navigation }) {
     maxHeight: 2000,
     quality: 0.8,
   };
+
+  const updateMessage = () => {
+    setMessage("Imagen Guardada"); // Cambia a un nuevo mensaje
+  };
+
   const requestGalleryPermission = async () => {
     if (Platform.OS === 'android') {
       try {
@@ -51,11 +58,15 @@ export default function addCarrito({ route, navigation }) {
     }
     console.log("ojo");
     const result = (await launchCamera(options as any)) as {
+      didCancel: any;
       assets: MimeType[];
     };
-
-    console.log('result' , result);
-
+    if (!result.didCancel && result.assets && result.assets.length > 0) {
+      const image = result.assets[0];
+      updateMessage();
+      setImageUri(image.uri);
+      return image;
+    }
   };
 
 
@@ -73,9 +84,15 @@ export default function addCarrito({ route, navigation }) {
     }
 
     const db = await SQLite.openDatabaseAsync('databaseName');
+
+    const base64Data = await readFile(imageUri, 'base64');
+    const binaryData = `data:image/jpeg;base64,${base64Data}`;
+
     await db.execAsync(`
+      DROP TABLE IF EXISTS testCarritos;
       CREATE TABLE IF NOT EXISTS testCarritos (
         id INTEGER PRIMARY KEY NOT NULL,
+        image BLOB,
         name TEXT NOT NULL, 
         hwID TEXT NOT NULL,
         category TEXT,
@@ -95,7 +112,7 @@ export default function addCarrito({ route, navigation }) {
         return;
       }
     }  
-    const result = await db.runAsync('INSERT INTO testCarritos (name,hwID,category, categoryID) VALUES (?, ?, ?, ?)', name,hwID,categoryName, categoryID);
+    const result = await db.runAsync('INSERT INTO testCarritos (image, name,hwID,category, categoryID) VALUES (?, ?, ?, ?, ?)', binaryData, name,hwID,categoryName, categoryID);
     await db.runAsync(`UPDATE testCategory SET current = current + 1 WHERE name = ?`,categoryName );
     Toast.show({
       type: 'success', // Tipo de Toast, 'success' para éxito
@@ -133,6 +150,9 @@ export default function addCarrito({ route, navigation }) {
         value={categoryID}
         onChangeText={setCategoryID}
       />
+      <Text>
+        {message}
+      </Text>
       <View style={styles.buttonContainer}>
         <Button title="Guardar" onPress={handleSubmit} />
       </View>
@@ -141,7 +161,10 @@ export default function addCarrito({ route, navigation }) {
         <Button title="Tomar foto" onPress={selectImage} />
       </View>
 
-      
+      <Image
+      source={{uri: imageUri}}
+      style={{width: 200, height: 200}}
+      />
 
 
       {/* Botón para regresar a la pantalla anterior */}

@@ -22,6 +22,7 @@ export default function CategoryDetailsScreen({ route, navigation })  {
     const allRows = await db.getAllAsync('SELECT * FROM testCarritos');
     const carritosList = allRows.map((row) => ({
       id: row.id, // Asumiendo que tienes un campo 'id' en tu base de datos
+      image: row.image,
       name: row.name,
       year: year,
       category: row.category,
@@ -48,6 +49,7 @@ export default function CategoryDetailsScreen({ route, navigation })  {
         data={carritos}
         renderItem={({ item }) => (
           <Carrito
+            image={item.image}
             name={item.name}
             year={item.year}
             category={item.category}

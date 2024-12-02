@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Image } from 'react-native';
 
 interface CarritoProps {
+  image: string;
   name: string;
   year: number;
   category: string;
@@ -12,40 +13,59 @@ interface CarritoProps {
 
 
 const Carrito: React.FC<CarritoProps> = ({
-  name, year, category, categoryTotal, categoryID, hwID
+  image, name, year, category, categoryTotal, categoryID, hwID
 }) => {
-  return <View style={styles.card}>
-    <Text style={styles.categoryTitle}>{`${category} - ${year}  (${categoryID}/${categoryTotal})`}</Text>
-    <Text style={styles.title}>{name}</Text>
-    <Text style={styles.hwText}>{hwID}</Text>
-  </View>;
+  return     <View style={styles.card}>
+  <Image source={{ uri: image }} style={styles.image} />
+  <View style={styles.textContainer}>
+    <Text style={styles.categoryTitle}>
+      {`${category} - ${year}  (${categoryID}/${categoryTotal})`}
+    </Text>
+    <Text style={styles.title}>Nombre: {name}</Text>
+    <Text style={styles.hwText}>hwID: {hwID}</Text>
+  </View>
+</View>
 }
 const styles = StyleSheet.create({
   card: {
-    flex: 1,
-    margin: 10,
-    padding: 15,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 8,
+    flexDirection: 'row', // Disposición horizontal para la imagen y el texto
     alignItems: 'center',
+    padding: 15,
+    marginVertical: 10,
+    backgroundColor: '#fff',
+    borderRadius: 10,
     shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    minHeight: 120, // Hacer el card más grande
+  },
+  image: {
+    width: 80, // Imagen más grande
+    height: 80,
+    borderRadius: 10, // Esquinas redondeadas
+    marginRight: 15, // Espacio entre la imagen y el texto
+  },
+  textContainer: {
+    flex: 1, // Ocupa el espacio restante
+    justifyContent: 'space-between', // Espaciado entre textos
   },
   categoryTitle: {
-    fontSize: 10,
-    marginBottom: 5,
+    fontSize: 16,
+    color: '#555',
+    marginBottom: 6,
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: 6,
   },
   hwText: {
-    fontSize: 12,
-    marginBottom: 5,
+    fontSize: 14,
+    color: '#888',
   },
 });
+
 
 export default Carrito;
