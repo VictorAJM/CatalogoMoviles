@@ -83,6 +83,20 @@ export default function addCarrito({ route, navigation }) {
       return; 
     }
 
+    setHWID(hwID.toUpperCase());
+    const formattedHwID = /^[A-Z]{3}[0-9]{2}$/i; // i para que no sea case-sensitive
+    if (!formattedHwID.test(hwID)) {
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Formato incorrecto',
+        text2: 'El ID del Hot Wheels debe tener el formato correcto.',
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+      return;
+    }
+
     const db = await SQLite.openDatabaseAsync('databaseName');
 
     const base64Data = await readFile(imageUri, 'base64');

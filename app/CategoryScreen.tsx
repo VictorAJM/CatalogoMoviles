@@ -42,10 +42,11 @@ export default function CategoryDetailsScreen({ route, navigation })  {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Button
+      {current < total && (      <Button
         title="Agrega carrito"
         onPress={() => navigation.navigate('Agrega Carrito', {categoryName: name})} // Navegar a la pantalla de agregar carrito
-      />
+      />)}
+
       <FlatList
         data={carritos}
         renderItem={({ item }) => (

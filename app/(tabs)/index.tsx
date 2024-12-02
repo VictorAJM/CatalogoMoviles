@@ -20,12 +20,12 @@ export default function HomeScreen() {
     const db = await SQLite.openDatabaseAsync('databaseName');
     const allRows = await db.getAllAsync('SELECT * FROM testCategory');
     const categoriesList = allRows.map((row) => ({
-      id: row.id, // Asumiendo que tienes un campo 'id' en tu base de datos
+      id: row.id,
       name: row.name,
       year: row.year,
       current: row.current,
       total: row.total,
-    }));
+    })).sort((a, b) => a.current - b.current);
 
     setCategories(categoriesList);
   };

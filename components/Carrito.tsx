@@ -15,7 +15,7 @@ interface CarritoProps {
 const Carrito: React.FC<CarritoProps> = ({
   image, name, year, category, categoryTotal, categoryID, hwID
 }) => {
-  return     <View style={styles.card}>
+  return     (<View style={styles.card}>
   <Image source={{ uri: image }} style={styles.image} />
   <View style={styles.textContainer}>
     <Text style={styles.categoryTitle}>
@@ -25,7 +25,7 @@ const Carrito: React.FC<CarritoProps> = ({
     <Text style={styles.hwText}>Hot Wheels ID: {hwID}</Text>
   </View>
 </View>
-}
+);}
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row', // Disposición horizontal para la imagen y el texto

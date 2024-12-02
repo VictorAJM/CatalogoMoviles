@@ -10,9 +10,12 @@ interface CategoryProps {
 }
 
 const Category: React.FC<CategoryProps> = ({ name, year, current, total, onPress }) => {
+  const cardStyle = current === total
+    ? [styles.card, { backgroundColor: '#b7e4b7', borderWidth: 3, borderColor: '#4CAF50' }]  // Borde verde para el caso donde current == total
+    : [styles.card, { backgroundColor: '#f0f0f0', borderWidth: 3, borderColor: '#808080' }];  // Borde gris para el caso contrario
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.card}>
+    <TouchableOpacity onPress={onPress} style={cardStyle}>
       <View style={styles.view}>
         <Text style={styles.title}>{name}</Text>
         <Text>Year: {year}</Text>
@@ -31,7 +34,6 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 10,
     padding: 15,
-    backgroundColor: '#f0f0f0',
     borderRadius: 8,
     alignItems: 'center',
     shadowColor: '#000',
