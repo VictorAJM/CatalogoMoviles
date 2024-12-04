@@ -14,11 +14,10 @@ import {
 import Carrito from '../components/Carrito';
 
 export default function CategoryDetailsScreen({ route, navigation }) {
-  const { current, id, name, total, year } = route.params; // Extract parameters
+  const { current, id, name, total, year } = route.params; 
   const [carritos, setCarritos] = useState([]);
   const [actual, setActual] = useState(current);
 
-  // Fetch data and set up the list of missing category IDs
   const fetchData = async () => {
     const db = await SQLite.openDatabaseAsync('databaseName');
     const allRows = await db.getAllAsync('SELECT * FROM testCarritos');
@@ -36,14 +35,12 @@ export default function CategoryDetailsScreen({ route, navigation }) {
     setActual(carritosList.length);
   };
 
-  // Call fetchData when the screen is focused
   useFocusEffect(
     React.useCallback(() => {
       fetchData();
     }, [])
   );
 
-  // Button press handler
   const handleAddCarrito = () => {
     navigation.navigate('Agrega Carrito', { categoryName: name, total: total });
   };
@@ -53,7 +50,7 @@ export default function CategoryDetailsScreen({ route, navigation }) {
       {actual < total && (
         <TouchableOpacity
           style={styles.button}
-          onPress={handleAddCarrito} // Navigate only when the button is pressed
+          onPress={handleAddCarrito} 
         >
           <Text style={styles.buttonText}>Agrega carrito</Text>
         </TouchableOpacity>
@@ -73,13 +70,12 @@ export default function CategoryDetailsScreen({ route, navigation }) {
           />
         )}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContainer}  // Additional styling for the list container
-        ItemSeparatorComponent={() => <View style={styles.separator} />}  // Separator between items
+        contentContainerStyle={styles.listContainer}  
+        ItemSeparatorComponent={() => <View style={styles.separator} />} 
       />
         <TouchableOpacity
           style={styles.buttonBack}
-          onPress={() => navigation.goBack()}// Navigate only when the button is pressed
-        >
+          onPress={() => navigation.goBack()}>
           <Text style={styles.buttonText}>Regresar</Text>
         </TouchableOpacity>
     </SafeAreaView>
@@ -91,37 +87,37 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 20,
-    backgroundColor: '#f8f8f8',  // Soft background color for the screen
+    backgroundColor: '#f8f8f8',  
   },
   button: {
-    backgroundColor: '#4CAF50',  // Green color for the button
+    backgroundColor: '#4CAF50', 
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 10,
     marginBottom: 20,
     alignItems: 'center',
-    elevation: 3,  // Shadow for the button
+    elevation: 3, 
   },
   buttonBack: {
-    backgroundColor: '#f44336',  // Green color for the button
+    backgroundColor: '#f44336', 
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 10,
     marginBottom: 20,
     alignItems: 'center',
-    elevation: 3,  // Shadow for the button
+    elevation: 3,  
   },
   buttonText: {
     fontSize: 18,
-    color: '#fff',  // White text
+    color: '#fff', 
     fontWeight: 'bold',
   },
   listContainer: {
-    paddingBottom: 20,  // Bottom padding for the list
+    paddingBottom: 20,  
   },
   separator: {
-    height: 10,  // Separator height between items
-    backgroundColor: '#f0f0f0',  // Separator color
+    height: 10,  
+    backgroundColor: '#f0f0f0',
   },
   buttonContainer: {
     paddingHorizontal: 20,

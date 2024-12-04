@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {NavigationContainer, NavigationIndependentTree} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';  // Correct import
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
 import AddCategory from './AddCategory';
 import AddCarrito from './AddCarrito';
@@ -10,18 +10,18 @@ const Stack = createNativeStackNavigator();
 
 const MyStack = () => {
   return (
-    <NavigationIndependentTree>
+    <NavigationContainer>  {/* Correct component */}
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{title: 'Hola!'}}
+          options={{ title: 'Hola!' }}
         />
         <Stack.Screen name="Agrega Categoria" component={AddCategory} />
         <Stack.Screen name="Agrega Carrito" component={AddCarrito} />
         <Stack.Screen name="Categoria" component={CategoryDetailsScreen} />
       </Stack.Navigator>
-    </NavigationIndependentTree>
+    </NavigationContainer>
   );
 };
 

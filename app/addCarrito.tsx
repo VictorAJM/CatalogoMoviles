@@ -17,7 +17,7 @@ export default function AddCarrito({ route, navigation }) {
   const [imageUri, setImageUri] = useState('');
 
   const updateMessage = () => {
-    setMessage("Imagen Guardada"); // Cambia a un nuevo mensaje
+    setMessage("Imagen Guardada"); 
   };
 
   const updatePhotoMessage =  () => {
@@ -93,7 +93,7 @@ export default function AddCarrito({ route, navigation }) {
       return; 
     }
 
-    const formattedHwID = /^[A-Z]{3}[0-9]{2}$/; // i para que no sea case-sensitive
+    const formattedHwID = /^[A-Z]{3}[0-9]{2}$/; 
     if (!formattedHwID.test(hwID)) {
       Toast.show({
         type: 'error',
@@ -133,8 +133,8 @@ export default function AddCarrito({ route, navigation }) {
     for (const row of allRows) {
       if (row.name == name || row.hwID == hwID || (row.categoryID == categoryID && row.category == categoryName)) {
         Toast.show({
-          type: 'error', // Tipo de Toast, 'error' para error
-          position: 'top', // Posición del Toast en la pantalla
+          type: 'error',
+          position: 'top', 
           text1: 'El carrito ya ha sido agregado',
           text2: 'Revisa los datos ingresados',
           visibilityTime: 3000,
@@ -201,10 +201,9 @@ export default function AddCarrito({ route, navigation }) {
 
       <Picker
         selectedValue={categoryID}
-        onValueChange={(itemValue) => setCategoryID(itemValue)} // Update selected value
+        onValueChange={(itemValue) => setCategoryID(itemValue)} 
         style={styles.picker}
       >
-        {/* Dynamically generate the Picker.Item elements */}
         {generatePickerItems().map((itemValue) => (
           <Picker.Item key={itemValue} label={`${itemValue}`} value={itemValue} />
         ))}

@@ -72,8 +72,8 @@ export default function HomeScreen() {
             />
           )}
           keyExtractor={(item) => item.id}
-          numColumns={2} // Config for 2 columns
-          columnWrapperStyle={styles.row} // Spacing between rows
+          numColumns={2} 
+          columnWrapperStyle={styles.row}
           />
       </SafeAreaView>
     </ParallaxScrollView>
@@ -82,22 +82,22 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   containerView: {
-    flex: 1,                      // Ocupa toda la pantalla
-    justifyContent: 'center',     // Centra verticalmente
-    alignItems: 'center',         // Centra horizontalmente
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center', 
   },
   button: {
-    height: 60,                   // Más alto
-    width: 200,                   // Menos ancho
-    backgroundColor: '#7594E9',   // Color de fondo
-    borderRadius: 8,              // Bordes redondeados
-    justifyContent: 'center',     // Centra el texto dentro del botón
-    alignItems: 'center',         // Centra el texto dentro del botón
+    height: 60,
+    width: 200,
+    backgroundColor: '#7594E9', 
+    borderRadius: 8,             
+    justifyContent: 'center',    
+    alignItems: 'center',      
   },
   buttonText: {
-    color: '#fff',                // Color del texto
-    fontSize: 18,                 // Tamaño del texto
-    fontWeight: 'bold',           // Negrita
+    color: '#fff',           
+    fontSize: 18,                 
+    fontWeight: 'bold',           
   },
   titleContainer: {
     flexDirection: 'row',
@@ -120,6 +120,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   row: {
-    justifyContent: 'space-between', // Espaciado entre columnas
+    justifyContent: 'space-between',
   },
 });

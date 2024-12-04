@@ -79,8 +79,8 @@ export default function AddCategory({ navigation }) {
             <Text style={styles.label}>Año de la categoria</Text>
 
             <Picker
-              selectedValue={quantity} // Bind the selected value to quantity state
-              onValueChange={(itemValue) => setYear(itemValue)} // Update quantity when the value changes
+              selectedValue={quantity} 
+              onValueChange={(itemValue) => setYear(itemValue)} 
               style={styles.picker}
             >
               <Picker.Item label="2022" value={2022} />
@@ -93,8 +93,8 @@ export default function AddCategory({ navigation }) {
             <Text style={styles.label}>Tamaño de la categoría</Text>
 
             <Picker
-              selectedValue={quantity} // Bind the selected value to quantity state
-              onValueChange={(itemValue) => setQuantity(itemValue)} // Update quantity when the value changes
+              selectedValue={quantity} 
+              onValueChange={(itemValue) => setQuantity(itemValue)} 
               style={styles.picker}
             >
               <Picker.Item label="5" value={5} />
