@@ -11,9 +11,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Carrito from '@/components/Carrito'; 
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 
 export default function CategoryDetailsScreen({ route, navigation })  {
   const { id, name, year, current, total } = route.params; // Extraer los parámetros
@@ -47,7 +44,7 @@ export default function CategoryDetailsScreen({ route, navigation })  {
       {current < total && (
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Agrega Carrito', { categoryName: name })}
+          onPress={() => navigation.navigate('Agrega Carrito', {categoryName: name})}
         >
           <Text style={styles.buttonText}>Agrega carrito</Text>
         </TouchableOpacity>
