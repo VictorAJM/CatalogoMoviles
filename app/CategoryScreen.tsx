@@ -15,6 +15,8 @@ import Carrito from '@/components/Carrito';
 export default function CategoryDetailsScreen({ route, navigation })  {
   const { id, name, year, current, total } = route.params; // Extraer los parámetros
   const [carritos, setCarritos] = useState([]);
+  const [actual, setActual] = useState(current);
+  const [lista, setLista] = useState([]);
 
   const fetchData = async () => {
     const db = await SQLite.openDatabaseAsync('databaseName');
@@ -30,6 +32,16 @@ export default function CategoryDetailsScreen({ route, navigation })  {
     })).filter((row)=> row.category == name)
     .sort((a, b) => a.categoryID - b.categoryID);
 
+    const allCategoryIDs = Array.from({ length: total }, (_, index) => index + 1);
+
+    // Get the categoryIDs from the carritosList
+    const existingCategoryIDs = carritosList.map((carrito) => carrito.categoryID);
+  
+    // Filter out the categoryIDs that already exist in carritosList
+    const missingCategoryIDs = allCategoryIDs.filter((id) => !existingCategoryIDs.includes(id));
+    console.log(missingCategoryIDs);
+    setLista(missingCategoryIDs);
+    setActual(carritosList.length);
     setCarritos(carritosList);
   };
 
@@ -39,12 +51,14 @@ export default function CategoryDetailsScreen({ route, navigation })  {
     }, [])
   );
 
+  console.log(actual);
+
   return (
     <SafeAreaView style={styles.container}>
-      {current < total && (
+      {actual < total && (
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Agrega Carrito', {categoryName: name})}
+          onPress={() => navigation.navigate('Agrega Carrito', {categoryName: name ,total: total, lista: lista})}
         >
           <Text style={styles.buttonText}>Agrega carrito</Text>
         </TouchableOpacity>

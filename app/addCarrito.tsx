@@ -4,8 +4,10 @@ import { View, Text, TextInput, Button, StyleSheet, ScrollView, Image, SafeAreaV
 import Toast from 'react-native-toast-message';
 import {ImagePickerResponse, launchCamera} from 'react-native-image-picker';
 import * as ImagePicker from 'expo-image-picker';
+import { Picker } from '@react-native-picker/picker';
+
 export default function AddCarrito({ route, navigation }) {
-  const { categoryName } = route.params;
+  const { categoryName, total, lista } = route.params;
   const [name, setName] = useState('');
   const [hwID, setHWID] = useState('');
   const [categoryID, setCategoryID] = useState('');
@@ -104,6 +106,18 @@ export default function AddCarrito({ route, navigation }) {
       });
       return;
     }
+
+    if (parseInt(categoryID, 10) > parseInt(total, 10) || parseInt(categoryID, 10) < 1) {
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'ID de la categoria incorrecto',
+        text2: 'El ID de la categoria es incorrecto o fuera de los limites',
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+      return;
+    }
   
     const db = await SQLite.openDatabaseAsync('databaseName');
 
@@ -135,7 +149,7 @@ export default function AddCarrito({ route, navigation }) {
     const result2 = await db.runAsync(`UPDATE testCategory SET current = current + 1 WHERE name = ?`,categoryName );
     if (result2 !== null) {
       Toast.show({
-        type: 'success', // Tipo de Toast, 'success' para éxito
+        type: 'success', 
         position: 'top',
         text1: 'Carrito guardada',
         text2: 'El carrito se ha guardado correctamente.',
@@ -155,6 +169,10 @@ export default function AddCarrito({ route, navigation }) {
     }
   };
 
+  const generatePickerItems = () => {
+    return lista;
+  };
+  console.log(lista);
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Agregar Nuevo Carrito</Text>
@@ -175,16 +193,21 @@ export default function AddCarrito({ route, navigation }) {
         onChangeText={setHWID}
       />
 
-      <TextInput
-        style={styles.input}
-        placeholder="ID en la categoria"
-        keyboardType="numeric"
-        placeholderTextColor="#888"
-        value={categoryID}
-        onChangeText={setCategoryID}
-      />
+<View style={styles.buttonContainer}>
+      <Text style={styles.label}>Selecciona el ID de la categoria</Text>
 
-{message ? <Text style={[styles.message, styles.successMessage]}>{message}</Text> : null}
+      <Picker
+        selectedValue={categoryID}
+        onValueChange={(itemValue) => setCategoryID(itemValue)} // Update selected value
+        style={styles.picker}
+      >
+  {generatePickerItems().map((item) => (
+    <Picker.Item key={item} label={`${item}`} value={item} />
+  ))}
+      </Picker>
+    </View>
+
+{message ? <Text style={[styles.message, getMessageStyle()]}>{message}</Text> : null}
 
       <View style={styles.buttonContainer}>
         <Button title={photoMessage} onPress={selectImage} color="#2196F3" />
@@ -261,5 +284,22 @@ const styles = StyleSheet.create({
     borderRadius: 10, 
     borderWidth: 1,
     borderColor: '#ccc', 
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    padding: 5,
+    borderRadius: 5,
+    textAlign: 'center',
+  },
+  picker: {
+    height: 50,
+    width: 300,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    backgroundColor: '#fff',
+    marginBottom: 20,
   },
 });

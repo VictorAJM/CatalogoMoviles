@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, Button, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { Picker } from '@react-native-picker/picker';
 
 export default function AddCategory({ navigation }) {
 
   const [name, setName] = useState('');
   const [year, setYear] = useState('');
-  const [quantity, setQuantity] = useState('');
+  const [quantity, setQuantity] = useState(5);
 
   const handleSubmit = async () => {
     if (!name || !year || !quantity) {
@@ -74,23 +75,32 @@ export default function AddCategory({ navigation }) {
         onChangeText={setName}
       />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Año"
-        keyboardType="numeric"
-        placeholderTextColor="#aaa"
-        value={year}
-        onChangeText={setYear}
-      />
+<View style={styles.buttonContainer}>
+            <Text style={styles.label}>Año de la categoria</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Tamaño de la categoría"
-        keyboardType="numeric"
-        placeholderTextColor="#aaa"
-        value={quantity}
-        onChangeText={setQuantity}
-      />
+            <Picker
+              selectedValue={quantity} // Bind the selected value to quantity state
+              onValueChange={(itemValue) => setYear(itemValue)} // Update quantity when the value changes
+              style={styles.picker}
+            >
+              <Picker.Item label="2022" value={2022} />
+              <Picker.Item label="2023" value={2023} />
+              <Picker.Item label="2024" value={2024} />
+            </Picker>
+          </View>
+
+      <View style={styles.buttonContainer}>
+            <Text style={styles.label}>Tamaño de la categoría</Text>
+
+            <Picker
+              selectedValue={quantity} // Bind the selected value to quantity state
+              onValueChange={(itemValue) => setQuantity(itemValue)} // Update quantity when the value changes
+              style={styles.picker}
+            >
+              <Picker.Item label="5" value={5} />
+              <Picker.Item label="10" value={10} />
+            </Picker>
+          </View>
 
       <View style={styles.buttonContainer}>
         <View style={styles.buttonWrapper}>
@@ -142,5 +152,21 @@ const styles = StyleSheet.create({
     width: '60%', 
     borderRadius: 8,
     overflow: 'hidden', 
+  },
+  pickerContainer: {
+    flex: 1,
+    padding: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  picker: {
+    height: 50,
+    width: 150,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    backgroundColor: '#fff',
   },
 });

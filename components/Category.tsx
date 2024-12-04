@@ -18,7 +18,7 @@ const Category: React.FC<CategoryProps> = ({ name, year, current, total, onPress
     <TouchableOpacity onPress={onPress} style={cardStyle}>
       <View style={styles.view}>
         <Text style={styles.title}>{name}</Text>
-        <Text>Year: {year}</Text>
+        <Text>Año: {year}</Text>
         <Text>{`(${current}/${total})`}</Text>
       </View>
     </TouchableOpacity>
