@@ -7,7 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Picker } from '@react-native-picker/picker';
 
 export default function AddCarrito({ route, navigation }) {
-  const { categoryName, total, lista } = route.params;
+  const { categoryName, total } = route.params;
   const [name, setName] = useState('');
   const [hwID, setHWID] = useState('');
   const [categoryID, setCategoryID] = useState('');
@@ -65,7 +65,6 @@ export default function AddCarrito({ route, navigation }) {
       
       if (!response.canceled) {
           const base64Image = response.assets[0];
-          console.log(base64Image);
           setImage64(base64Image.base64);
           setImageUri(base64Image.uri);
           updatePhotoMessage();
@@ -170,9 +169,13 @@ export default function AddCarrito({ route, navigation }) {
   };
 
   const generatePickerItems = () => {
-    return lista;
+    let items = [];
+    for (let i = 1; i <= total; i++) {
+      items.push(i);
+    }
+    return items;
   };
-  console.log(lista);
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Agregar Nuevo Carrito</Text>
@@ -194,16 +197,17 @@ export default function AddCarrito({ route, navigation }) {
       />
 
 <View style={styles.buttonContainer}>
-      <Text style={styles.label}>Selecciona el ID de la categoria</Text>
+      <Text style={styles.label}>Selecciona un valor</Text>
 
       <Picker
         selectedValue={categoryID}
         onValueChange={(itemValue) => setCategoryID(itemValue)} // Update selected value
         style={styles.picker}
       >
-  {generatePickerItems().map((item) => (
-    <Picker.Item key={item} label={`${item}`} value={item} />
-  ))}
+        {/* Dynamically generate the Picker.Item elements */}
+        {generatePickerItems().map((itemValue) => (
+          <Picker.Item key={itemValue} label={`${itemValue}`} value={itemValue} />
+        ))}
       </Picker>
     </View>
 

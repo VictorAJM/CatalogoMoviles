@@ -28,7 +28,6 @@ export default function HomeScreen() {
       current: row.current,
       total: row.total,
     })).sort((a, b) => a.current - b.current);
-
     setCategories(categoriesList);
   };
 
