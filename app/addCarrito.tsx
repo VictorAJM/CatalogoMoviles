@@ -1,83 +1,86 @@
 import React, { useEffect, useState } from 'react';
 import * as SQLite from 'expo-sqlite';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ScrollView, Image, SafeAreaView, PermissionsAndroid, Platform } from 'react-native';
 import Toast from 'react-native-toast-message';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import { PermissionsAndroid, Platform } from 'react-native';
-import { readFile } from 'react-native-fs';
-
+import {ImagePickerResponse, launchCamera} from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 export default function AddCarrito({ route, navigation }) {
-
   const { categoryName } = route.params;
   const [name, setName] = useState('');
   const [hwID, setHWID] = useState('');
   const [categoryID, setCategoryID] = useState('');
   const [message, setMessage] = useState("Sin imagen guardada");
   const [photoMessage, setPhotoMessage] = useState("Tomar foto");
-  const [imageUri, setImageUri] = useState(null);
-  const options = {
-    mediaType: 'photo',
-    title: 'Select Image',
-    maxWidth: 2000,
-    maxHeight: 2000,
-    quality: 0.8,
-  };
+  const [image64, setImage64] = useState('');
+  const [imageUri, setImageUri] = useState('');
 
   const updateMessage = () => {
     setMessage("Imagen Guardada"); // Cambia a un nuevo mensaje
   };
 
-  const updatePhotoMessage = () => {
+  const updatePhotoMessage =  () => {
     setPhotoMessage("Volver a tomar foto");
-  }
+  };
 
   const requestGalleryPermission = async () => {
     if (Platform.OS === 'android') {
       try {
-        // Solicitar el permiso si no está otorgado
+        const wasGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA);
+        if (wasGranted) return true;
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.CAMERA,
           {
-            title: 'Permiso de camara',
-            message: 'Esta aplicación necesita acceso a tu camara para tomar imágenes.',
-            buttonNeutral: 'Luego',
+            title: 'Permiso de cámara',
+            message: 'Esta aplicación necesita acceso a tu cámara.',
+            buttonNeutral: 'Pregúntame luego',
             buttonNegative: 'Cancelar',
             buttonPositive: 'Aceptar',
           }
         );
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Permiso de cámara otorgado');
+          return true;
+        } else {
+          console.log('Permiso de cámara denegado');
+          return false;
+        }
       } catch (err) {
-        console.warn('Error al solicitar permisos:', err);
-        return false;
+        console.warn('Error al solicitar permiso:', err);
       }
     }
-    return true; // iOS no requiere este permiso explícitamente
+    return true;
   };
 
   const selectImage = async () => {
-    const hasPermission = await requestGalleryPermission();
+    const granted = await requestGalleryPermission();
+    if (!granted) return;
+    ImagePicker.launchCameraAsync({ 
+      mediaType: 'photo', 
+      base64: true,  
+      maxHeight: 200, 
+      maxWidth: 200, 
+  }).then((response) => {
+      
+      if (!response.canceled) {
+          const base64Image = response.assets[0];
+          console.log(base64Image);
+          setImage64(base64Image.base64);
+          setImageUri(base64Image.uri);
+          updatePhotoMessage();
+          updateMessage();
+          return;
+      } else {
+          console.log(response); 
+      }
+  }).catch((error) => {
+      console.log(error); 
   
-    if (!hasPermission) {
-      console.log('No se otorgó permiso a la camara');
-      return;
-    }
-    console.log("ojo");
-    const result = (await launchCamera(options as any)) as {
-      didCancel: any;
-      assets: MimeType[];
-    };
-    if (!result.didCancel && result.assets && result.assets.length > 0) {
-      const image = result.assets[0];
-      updateMessage();
-      updatePhotoMessage();
-      setImageUri(image.uri);
-      return;
-    }
-  };
+
+  })};
 
 
   const handleSubmit = async () => {
-    if (!name || !hwID || !categoryID ||!imageUri) {
+    if (!name || !hwID || !categoryID || image64 === null) {
       Toast.show({
         type: 'error',
         position: 'top',
@@ -89,8 +92,7 @@ export default function AddCarrito({ route, navigation }) {
       return; 
     }
 
-    setHWID(hwID.toUpperCase());
-    const formattedHwID = /^[A-Z]{3}[0-9]{2}$/i; // i para que no sea case-sensitive
+    const formattedHwID = /^[A-Z]{3}[0-9]{2}$/; // i para que no sea case-sensitive
     if (!formattedHwID.test(hwID)) {
       Toast.show({
         type: 'error',
@@ -102,11 +104,8 @@ export default function AddCarrito({ route, navigation }) {
       });
       return;
     }
-
+  
     const db = await SQLite.openDatabaseAsync('databaseName');
-
-    const base64Data = await readFile(imageUri, 'base64');
-    const binaryData = `data:image/jpeg;base64,${base64Data}`;
 
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS testCarritos (
@@ -130,19 +129,22 @@ export default function AddCarrito({ route, navigation }) {
         });
         return;
       }
-    }  
-    const result = await db.runAsync('INSERT INTO testCarritos (image, name,hwID,category, categoryID) VALUES (?, ?, ?, ?, ?)', binaryData, name,hwID,categoryName, categoryID);
-    await db.runAsync(`UPDATE testCategory SET current = current + 1 WHERE name = ?`,categoryName );
-    Toast.show({
-      type: 'success', // Tipo de Toast, 'success' para éxito
-      position: 'top',
-      text1: 'Carrito guardada',
-      text2: 'El carrito se ha guardado correctamente.',
-      visibilityTime: 3000,
-      autoHide: true,
-    });
+    }
+
+    const result = await db.runAsync('INSERT INTO testCarritos (image, name,hwID,category, categoryID) VALUES (?, ?, ?, ?, ?)', imageUri, name,hwID,categoryName, categoryID);
+    const result2 = await db.runAsync(`UPDATE testCategory SET current = current + 1 WHERE name = ?`,categoryName );
+    if (result2 !== null) {
+      Toast.show({
+        type: 'success', // Tipo de Toast, 'success' para éxito
+        position: 'top',
+        text1: 'Carrito guardada',
+        text2: 'El carrito se ha guardado correctamente.',
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+    } 
     return;
-  }
+}
 
   const getMessageStyle = () => {
     if (!message) return {};
@@ -154,7 +156,7 @@ export default function AddCarrito({ route, navigation }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Agregar Nuevo Carrito</Text>
       
       <TextInput
@@ -182,16 +184,14 @@ export default function AddCarrito({ route, navigation }) {
         onChangeText={setCategoryID}
       />
 
-      {message ? <Text style={[styles.message, getMessageStyle()]}>{message}</Text> : null}
-
+{message ? <Text style={[styles.message, styles.successMessage]}>{message}</Text> : null}
 
       <View style={styles.buttonContainer}>
         <Button title={photoMessage} onPress={selectImage} color="#2196F3" />
       </View>
 
       {imageUri ? (
-        <Image source={{ uri: imageUri }} style={styles.image} />
-      ) : null}
+      <Image source={{ uri: imageUri }} style={styles.image} />) : null}
 
       <View style={styles.buttonContainer}>
         <Button title="Guardar" onPress={handleSubmit} color="#4CAF50" />
@@ -200,9 +200,8 @@ export default function AddCarrito({ route, navigation }) {
       <View style={styles.buttonContainer}>
         <Button title="Regresar" onPress={() => navigation.goBack()} color="#f44336" />
       </View>
-
-      <Toast ref={(ref) => Toast.setRef(ref)} />
-    </ScrollView>
+      <Toast ref={(ref: any) => Toast.setRef(ref)} />
+    </SafeAreaView>
   );
 }
 
