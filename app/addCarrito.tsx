@@ -45,7 +45,7 @@ export default function AddCarrito({ route, navigation }) {
             buttonPositive: 'Aceptar',
           }
         );
-        return granted == PermissionsAndroid.RESULTS.GRANTED;
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
         console.warn('Error al solicitar permisos:', err);
         return false;
@@ -71,7 +71,7 @@ export default function AddCarrito({ route, navigation }) {
       updateMessage();
       updatePhotoMessage();
       setImageUri(image.uri);
-      return image;
+      return;
     }
   };
 

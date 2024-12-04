@@ -18,6 +18,7 @@ const MyStack = () => {
           options={{title: 'Hola!'}}
         />
         <Stack.Screen name="Agrega Categoria" component={AddCategory} />
+        <Stack.Screen name="Agrega Carrito" component={AddCarrito} />
         <Stack.Screen name="Categoria" component={CategoryDetailsScreen} />
       </Stack.Navigator>
     </NavigationIndependentTree>
