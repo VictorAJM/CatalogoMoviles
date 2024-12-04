@@ -1,10 +1,10 @@
 import { Image, StyleSheet, Platform, SafeAreaView,FlatList,View, Button, Text, TouchableOpacity   } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import ParallaxScrollView from '../components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import Category from '@/components/Category';
+import Category from '../components/Category';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState, useEffect } from 'react';
@@ -47,7 +47,7 @@ export default function HomeScreen() {
 
       headerImage={
         <Image
-          source={require('@/assets/images/Hot-Wheels-Emblema.png')}
+          source={require('../assets/images/Hot-Wheels-Emblema.png')}
           style={styles.hwLogo}
         />
       }>

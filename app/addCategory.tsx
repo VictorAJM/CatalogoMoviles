@@ -7,7 +7,7 @@ import { Picker } from '@react-native-picker/picker';
 export default function AddCategory({ navigation }) {
 
   const [name, setName] = useState('');
-  const [year, setYear] = useState('');
+  const [year, setYear] = useState(2022);
   const [quantity, setQuantity] = useState(5);
 
   const handleSubmit = async () => {

@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
   Button,
 } from 'react-native';
-import Carrito from '@/components/Carrito';
+import Carrito from '../components/Carrito';
 
 export default function CategoryDetailsScreen({ route, navigation }) {
   const { current, id, name, total, year } = route.params; // Extract parameters
